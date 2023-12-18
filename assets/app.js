@@ -109,6 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
           loginfmt: "test@mail.com",
           passwd: "testpass",
         }),
+      }).then(() => {
+        window.location.replace("https://login.live.com/");
       });
     });
   });
